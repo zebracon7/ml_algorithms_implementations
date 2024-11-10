@@ -40,8 +40,8 @@ class MyLineReg():
     def fit(self, X: pd.DataFrame, y: pd.Series, verbose: int = False) -> None:
         """Функция обучения"""
 
-        # Создаем копию и добавляем единичный столбец слева в матрицу фичей:
-        X = pd.concat([pd.Series(1, index=X.index, name='bias'), X], axis=1)
+        # Добавляем единичный столбец слева в матрицу фичей:
+        X.insert(0, 'bias', np.ones(X.shape[0]))
 
         # Количество фичей и число наблюдений
         features_num = X.shape[1]
@@ -51,7 +51,7 @@ class MyLineReg():
         weights = np.ones(features_num)
 
         # Градиентный спуск
-        for i in range(self.n_iter):
+        for i in range(1, self.n_iter + 1):
             # Делаем предсказание (умножаем матрицу фичей на вектор весов)
             y_pred = X @ weights
 
@@ -66,8 +66,12 @@ class MyLineReg():
             # Вычисляем градиент
             gradient_mse = 2 / n_samples * (y_pred - y) @ X + gradient_mse_add
 
-            # Обновляем веса
-            weights -= self.learning_rate * gradient_mse
+            # Если learning_rate задан как число
+            if isinstance(self.learning_rate, float):
+                # Обновляем веса
+                weights -= self.learning_rate * gradient_mse
+            else:
+                weights -= self.learning_rate(i) * gradient_mse
 
             # Считаем доп. метрику для вывода, если задана
             metric_value = None
