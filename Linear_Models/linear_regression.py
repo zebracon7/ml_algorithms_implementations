@@ -291,7 +291,8 @@ if __name__ == '__main__':
     1. Создается синтетический набор данных с помощью make_regression из sklearn.
     2. Инициализируется и обучается модель линейной регрессии MyLineReg.
     3. Выводятся коэффициенты модели и предсказания для нового набора данных.
-    """    # Создаем датасет
+    """    
+    # Создаем датасет
     from sklearn.datasets import make_regression
 
     X, y = make_regression(n_samples=1000, n_features=14, n_informative=10, noise=15, random_state=42)
