@@ -115,12 +115,11 @@ class MyLineReg():
                 sample_rows_idx = random.sample(range(X.shape[0]), batch_size)
 
                 # Отбираем mini-batch
-                # X_batch = X.iloc[sample_rows_idx]
-                # y_batch = pd.Series(y).loc[sample_rows_idx]
                 X_batch = X.iloc[sample_rows_idx]
                 y_batch = y.iloc[sample_rows_idx]
 
             else:
+                # Если обычный DG, а не SDG
                 X_batch = X
                 y_batch = y
                 batch_size = n_samples
